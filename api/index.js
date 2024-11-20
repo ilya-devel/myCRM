@@ -1,12 +1,11 @@
 const express = require('express')
+const auth = require('./routes/auth')
 
 let app = express()
 
 const PORT = 10666
 
-app.use((error, req, res, next) => {
-    console.log(req.url);
-})
+
 
 app.get('/', function (req, res) {
     res
@@ -15,13 +14,6 @@ app.get('/', function (req, res) {
     .send("<h1>Hello Test</h1>")
 })
 
-app.get('/req', (req, res) => {
-    res.json(req.query)
-})
-
-app.get('/res', (req, res) => {
-    res.json(res.json)
-})
-
+app.use('/auth', auth)
 
 app.listen(PORT)
