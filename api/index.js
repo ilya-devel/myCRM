@@ -23,4 +23,6 @@ app.get('/', function (req, res) {
 
 app.use('/auth', auth)
 
-app.listen(PORT)
+app.listen(PORT, () => {
+    console.log(`Listening http://localhost:${PORT}.`)
+})
