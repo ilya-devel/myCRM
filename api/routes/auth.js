@@ -1,7 +1,8 @@
 const express = require('express')
 const cookieParser = require('cookie-parser')
-const { checkLogin } = require('../validations/authValid')
-const { loginScheme } = require('../schemes/authSchemes')
+const { checkLogin, checkAuth, hasUser, createUser } = require('../validations/authValid')
+const { loginScheme, signInScheme } = require('../schemes/authSchemes')
+const bcrypt = require('bcryptjs')
 
 const router = express.Router()
 router.use(express.json());
@@ -39,11 +40,10 @@ router.get('/login', (req, res) => {
         })
 })
 
-router.post('/login', checkLogin(loginScheme), (req, res) => {
+router.post('/login', checkAuth(loginScheme), hasUser(), (req, res) => {
     try {
         res.status(202).json({
             message: "All OK",
-            ...req.body
         })
     } catch (error) {
         res
@@ -66,6 +66,23 @@ router.get('/signin', (req, res) => {
                 "confirmPassword": "confirm password"
             }
         })
+})
+
+router.post('/signin', checkAuth(signInScheme), createUser(), (req, res) => {
+    try {
+        res
+            .status(201)
+            .json({
+                message: "User created",
+                id: res.locals.userId,
+            })
+    } catch (error) {
+        res
+            .status(500)
+            .json({
+                error: error.msg
+            })
+    }
 })
 
 
