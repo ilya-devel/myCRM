@@ -1,5 +1,10 @@
 ### DIRS ###
 node_modules/
-db/
+db*/
 
 ### FILES ###
+
+
+### TEST THEORY ###
+test*/
+crud-with-mongodb/
