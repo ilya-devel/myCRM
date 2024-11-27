@@ -23,7 +23,7 @@ const hasUser = () => {
             email: req.body.email,
             password: bcrypt.hashSync(req.body.password, salt)
         })
-        console.log(result)
+        // console.log(result)
         if (!result) {
             return res
                 .status(401)

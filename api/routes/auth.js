@@ -1,5 +1,4 @@
 const express = require('express')
-const cookieParser = require('cookie-parser')
 const { checkLogin, checkAuth, hasUser, createUser } = require('../validations/authValid')
 const { loginScheme, signInScheme } = require('../schemes/authSchemes')
 const bcrypt = require('bcryptjs')
@@ -9,16 +8,17 @@ router.use(express.json());
 
 
 router.get('/logout', (req, res) => {
-    let username = req.cookies.username ? req.cookies.username : "anonym"
+    let username = req.session.username ? req.session.username : "anonym"
 
-    res.cookie('username', '', {
-        expires: new Date(Date.now() - 1000),
-        httpOnly: true
-    })
-    res.cookie('session_id', '', {
-        expires: new Date(Date.now() - 1000),
-        httpOnly: true
-    })
+    // res.cookie('username', '', {
+    //     expires: new Date(Date.now() - 1000),
+    //     httpOnly: true
+    // })
+    // res.cookie('session_id', '', {
+    //     expires: new Date(Date.now() - 1000),
+    //     httpOnly: true
+    // })
+
 
     res
         .status(200)
