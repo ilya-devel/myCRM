@@ -23,12 +23,15 @@ const hasUser = () => {
             email: req.body.email,
             password: bcrypt.hashSync(req.body.password, salt)
         })
-        // console.log(result)
+        req.session.userInfo = {
+            ...req.session.userInfo,
+            username: result.username
+        }
         if (!result) {
             return res
                 .status(401)
                 .json({
-                    error: 'User not found'
+                    error: 'Пользователь не найден'
                 })
         }
         next()
@@ -37,19 +40,32 @@ const hasUser = () => {
 
 const createUser = () => {
     return async (req, res, next) => {
-        const newUser = new User()
-        newUser.email = req.body.email
-        newUser.username = req.body.username
-        newUser.password = bcrypt.hashSync(req.body.password, salt)
-        newUser.save()
+        const tmpUser = await User.findOne({ email: req.body.email })
+        if (!tmpUser) {
+            const newUser = new User()
+            newUser.email = req.body.email
+            newUser.username = req.body.username
+            newUser.password = bcrypt.hashSync(req.body.password, salt)
+            newUser.save()
 
-        res.locals.userId = newUser._id
+            req.session.userInfo = {
+                ...req.session.userInfo,
+                username: newUser.username,
+                user_id: newUser._id
+            }
+        } else {
+            return res
+            .status(400)
+            .json({
+                error: 'Пользователь с такой почтой уже существует'
+            })
+        }
 
-        if (!res.locals.userId) {
+        if (!req.session.userInfo.user_id) {
             return res
                 .status(500)
                 .json({
-                    error: "Error saving data"
+                    error: "Ошибка сохранения данных"
                 })
         }
         next()

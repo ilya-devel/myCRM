@@ -51,7 +51,6 @@ app.use(
 
 
 app.get('/', function (req, res) {
-    req.session.username = 'UserTest'
     res
         .status(200)
         .send("<h1>Hello Test</h1>")
