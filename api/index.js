@@ -1,36 +1,59 @@
 const express = require('express')
-const cookieParser = require('cookie-parser')
 const mongoose = require('mongoose')
 require('dotenv').config({ path: '../.env' })
+const session = require('express-session')
+const { createClient } = require('redis')
+const RedisStore = require('connect-redis').default
+
+let redisClient = createClient()
+redisClient.connect({
+    socket: {
+        host: 'localhost',
+        port: 6380
+    },
+    username: process.env.REDIS_USER,
+    password: process.env.REDIS_USER_PASSWORD
+}).catch(console.error)
+
+let redisStore = new RedisStore({
+    client: redisClient,
+    prefix: "myCRM:",
+})
 
 
 const ADMIN = process.env.MONGO_INITDB_ROOT_USERNAME
 const PASSWORD = process.env.MONGO_INITDB_ROOT_PASSWORD
 
 
+
 mongoose.connect(
     `mongodb://${ADMIN}:${PASSWORD}@localhost:27017`, {
-        dbName: 'myApi'
-    }
+    dbName: 'myApi'
+}
 ).then(() => console.log('Connected!'))
 
 const auth = require('./routes/auth')
 const User = require('./models/User')
 
 let app = express()
-app.use(cookieParser())
+// app.use(cookieParser())
 
 const PORT = 10666
 
+app.use(
+    session({
+        store: redisStore,
+        resave: false, // required: force lightweight session keep alive (touch)
+        saveUninitialized: false, // recommended: only save session when data exists
+        secret: process.env.SECRET_KEY,
+    }),
+)
+
 
 app.get('/', function (req, res) {
+    req.session.username = 'UserTest'
     res
         .status(200)
-        .cookie('username', 'Ilya', {
-            expires: new Date(Date.now() + 90000),
-            httpOnly: true,
-        },
-        )
         .send("<h1>Hello Test</h1>")
 })
 
