@@ -7,16 +7,25 @@ const User = require('../models/User')
 const router = express.Router()
 router.use(express.json());
 
+router.get('/', (req, res) => {
+    res
+        .status(200)
+        .json({
+            username: req.session.userInfo.username || 'Гость',
+            isAuth: req.session.isAuth
+        })
+})
+
 
 router.get('/logout', (req, res) => {
-    let username = req.session.userInfo ? req.session.userInfo.username : "anonym"
+    let username = req.session.userInfo ? req.session.userInfo.username : "Гость"
     req.session.isAuth = false
     req.session.userInfo = null
     res
         .status(200)
         .json({
-            message: `Goodbye ${username}`,
-            form: "You log out"
+            message: `До свидания ${username}`,
+            form: "Вы вышли из системы"
         })
 })
 
@@ -24,7 +33,7 @@ router.get('/login', (req, res) => {
     res
         .status(200)
         .json({
-            "message": "You need to send next data",
+            "message": "Вам нужно ввести указанные ниже данные",
             "form": {
                 "email": "email@example.com",
                 "password": "some password"
@@ -36,7 +45,7 @@ router.post('/login', checkAuth(loginScheme), hasUser(), (req, res) => {
     try {
         req.session.isAuth = true
         res.status(202).json({
-            message: `Welcome ${req.session.userInfo.username}`,
+            message: `Добро пожаловать ${req.session.userInfo.username}`,
         })
     } catch (error) {
         res
@@ -51,7 +60,7 @@ router.get('/signin', (req, res) => {
     res
         .status(200)
         .json({
-            "message": "You need to send next data",
+            "message": "Вам нужно ввести указанные ниже данные",
             "form": {
                 "username": "some name",
                 "email": "email@example.com",
@@ -66,7 +75,7 @@ router.post('/signin', checkAuth(signInScheme), createUser(), (req, res) => {
         res
             .status(201)
             .json({
-                message: "User created",
+                message: "Пользователь создан",
                 id: req.session.userInfo.user_id,
                 username: req.session.userInfo.username
             })
