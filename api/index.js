@@ -4,6 +4,7 @@ require('dotenv').config({ path: '../.env' })
 const session = require('express-session')
 const { createClient } = require('redis')
 const RedisStore = require('connect-redis').default
+const cors = require('cors')
 
 let redisClient = createClient()
 redisClient.connect({
@@ -49,6 +50,7 @@ app.use(
     }),
 )
 
+app.use(cors())
 
 app.get('/', function (req, res) {
     res
