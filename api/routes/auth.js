@@ -2,24 +2,16 @@ const express = require('express')
 const { checkLogin, checkAuth, hasUser, createUser } = require('../validations/authValid')
 const { loginScheme, signInScheme } = require('../schemes/authSchemes')
 const bcrypt = require('bcryptjs')
+const User = require('../models/User')
 
 const router = express.Router()
 router.use(express.json());
 
 
 router.get('/logout', (req, res) => {
-    let username = req.session.username ? req.session.username : "anonym"
-
-    // res.cookie('username', '', {
-    //     expires: new Date(Date.now() - 1000),
-    //     httpOnly: true
-    // })
-    // res.cookie('session_id', '', {
-    //     expires: new Date(Date.now() - 1000),
-    //     httpOnly: true
-    // })
-
-
+    let username = req.session.userInfo ? req.session.userInfo.username : "anonym"
+    req.session.isAuth = false
+    req.session.userInfo = null
     res
         .status(200)
         .json({
@@ -42,8 +34,9 @@ router.get('/login', (req, res) => {
 
 router.post('/login', checkAuth(loginScheme), hasUser(), (req, res) => {
     try {
+        req.session.isAuth = true
         res.status(202).json({
-            message: "All OK",
+            message: `Welcome ${req.session.userInfo.username}`,
         })
     } catch (error) {
         res
@@ -74,7 +67,8 @@ router.post('/signin', checkAuth(signInScheme), createUser(), (req, res) => {
             .status(201)
             .json({
                 message: "User created",
-                id: res.locals.userId,
+                id: req.session.userInfo.user_id,
+                username: req.session.userInfo.username
             })
     } catch (error) {
         res
