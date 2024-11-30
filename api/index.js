@@ -50,7 +50,12 @@ app.use(
     }),
 )
 
-app.use(cors())
+const corsConf = {
+    origin: true,
+    optionsSuccessStatus: 200,
+    credentials: true,
+}
+app.use(cors(corsConf))
 
 app.get('/', function (req, res) {
     res

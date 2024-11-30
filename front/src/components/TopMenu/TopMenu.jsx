@@ -3,7 +3,7 @@ import UserMenu from "./UserMenu";
 import './TopMenu.sass'
 import { NavLink } from "react-router-dom";
 
-export default function TopMenu() {
+export default function TopMenu(props) {
     return <>
         <header>
             <div className="icon-app">
@@ -17,7 +17,7 @@ export default function TopMenu() {
                 {UserMenu()}
             </div>
             <div className="in-out">
-                {LogInOut()}
+                {LogInOut(props)}
             </div>
         </header>
     </>

@@ -11,7 +11,7 @@ router.get('/', (req, res) => {
     res
         .status(200)
         .json({
-            username: req.session.userInfo.username || 'Гость',
+            username: req.session.userInfo ? req.session.userInfo.username : 'Гость',
             isAuth: req.session.isAuth
         })
 })
