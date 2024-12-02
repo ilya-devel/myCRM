@@ -15,6 +15,6 @@ export default function HomePage() {
     return <>
         {loading && <div className="loadingMsg" >Идёт загрузка</div>}
         {error && <div className="errorMsg" >Ошибка: {error}</div>}
-        <h1>{userInfo.username}, приветствуем вас в нашем приложении myCRM</h1>
+        <p className='h1'>{userInfo.username}, приветствуем вас в нашем приложении myCRM</p>
     </>
 }

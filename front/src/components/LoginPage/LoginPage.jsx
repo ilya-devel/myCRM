@@ -26,8 +26,10 @@ export default function LoginPage() {
                 })
             })
             if (!result.ok) {
-                console.log(result)
-                setError(result.error)
+                result
+                    .json()
+                    .then(r => setError(r.error))
+                    .catch(console.log('Bad request'))
                 return null
             } else {
                 return navigate('/')
@@ -40,7 +42,7 @@ export default function LoginPage() {
     }
 
     return <>
-        <h1>Страница авторизации</h1>
+        <p className='h1'>Страница авторизации</p>
         {error && <MsgError msg={error} setError={setError} />}
         <div className="form-login">
             <label htmlFor="email">Ваша почта: </label>
