@@ -41,7 +41,7 @@ export default function LoginPage() {
 
     return <>
         <h1>Страница авторизации</h1>
-        {error && <MsgError msg={error} />}
+        {error && <MsgError msg={error} setError={setError} />}
         <div className="form-login">
             <label htmlFor="email">Ваша почта: </label>
             <input className='inputSpace' type="email" name="email" id="email" onChange={e => setEmail(e.target.value)} />
