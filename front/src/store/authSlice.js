@@ -1,13 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import process from 'dotenv'
-process.config({ path: '../.env' })
 
 
 export const fetchAuth = createAsyncThunk(
     'auth/fetchAuth',
-    async (endPoint, thunkApi) => {
+    async (endPoint = '', thunkApi) => {
         try {
-            const response = await fetch(`${process.env.AUTH_URL}${endPoint}`)
+            const response = await fetch('http://localhost:10666/auth/' + endPoint, {
+                credentials: 'include'
+            })
             if (!response.ok) {
                 throw new Error('Возникла проблема при обращении к базе')
             } else {
@@ -27,7 +27,7 @@ const initialState = {
 }
 
 const authSlice = createSlice({
-    name: authSlice,
+    name: 'authSlice',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
@@ -39,11 +39,7 @@ const authSlice = createSlice({
             .addCase(fetchAuth.fulfilled, (state, action) => {
                 state.loading = false
                 state.error = null
-                if (action.payload.length === 1) {
-                    state.curProduct = action.payload[0]
-                } else {
-                    state.products = action.payload
-                }
+                state.userInfo = action.payload
             })
             .addCase(fetchAuth.rejected, (state, action) => {
                 state.loading = false

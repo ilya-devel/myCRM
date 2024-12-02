@@ -1,36 +1,47 @@
 import { useState } from 'react'
 import './LoginPage.sass'
 import { useNavigate } from 'react-router-dom'
+import MsgError from '../AppMessages/MsgError'
 
 
 
 export default function LoginPage() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [error, setError] = useState(null)
 
     const navigate = useNavigate()
 
     const sendAuthData = async () => {
-        const result = await fetch(`http://localhost:10666/auth/login`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8',
-            },
-            body: JSON.stringify({
-                email: email,
-                password: password
+        try {
+            const result = await fetch(`http://localhost:10666/auth/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8',
+                },
+                credentials: 'include',
+                body: JSON.stringify({
+                    email: email,
+                    password: password
+                })
             })
-        })
-        if (!result.ok) {
-            console.log(result)
-            return null
+            if (!result.ok) {
+                console.log(result)
+                setError(result.error)
+                return null
+            } else {
+                return navigate('/')
+            }
+        } catch (error) {
+            console.log('error')
+            setError(error.message)
         }
-        return navigate('/')
+
     }
 
     return <>
         <h1>Страница авторизации</h1>
-
+        {error && <MsgError msg={error} setError={setError} />}
         <div className="form-login">
             <label htmlFor="email">Ваша почта: </label>
             <input className='inputSpace' type="email" name="email" id="email" onChange={e => setEmail(e.target.value)} />
