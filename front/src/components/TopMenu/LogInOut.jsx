@@ -1,18 +1,14 @@
 import { NavLink, useNavigate } from "react-router-dom"
 import { fetchAuth } from "../../store/authSlice"
-import { useDispatch, useSelector } from 'react-redux'
-import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { useState } from 'react'
+import PropTypes from "prop-types"
 
 
-export default function LogInOut() {
-    const { userInfo } = useSelector(state => state.auth)
+export default function LogInOut(props) {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const [error, setError] = useState('')
-
-    useEffect(() => {
-        dispatch(fetchAuth())
-    }, [dispatch])
 
     const funcLogout = async () => {
         const result = await fetch(`http://localhost:10666/auth/logout`, {
@@ -31,11 +27,11 @@ export default function LogInOut() {
         return null
     }
 
-    if (userInfo.isAuth) {
+    if (props.userInfo.isAuth) {
         return <>
             {error && <div className="errorMsg" >Ошибка: {error}</div>}
             <button className="btn btn-topMenu" onClick={funcLogout}>
-                Log out ({userInfo.username || ''})
+                Log out ({props.userInfo.username || ''})
             </button>
         </>
     } else {
@@ -48,4 +44,8 @@ export default function LogInOut() {
                 </div></NavLink>
         </>
     }
+}
+
+LogInOut.propTypes = {
+    userInfo: PropTypes.object
 }
