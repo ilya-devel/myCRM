@@ -7,10 +7,11 @@ const checkAuth = (schema) => {
     return (req, res, next) => {
         const validationResult = schema.validate(req.body)
         if (validationResult.error) {
+            console.log(validationResult.error)
             return res
                 .status(406)
                 .json({
-                    error: validationResult.error.details
+                    error: validationResult.error.details[0].message
                 })
         }
         next()
@@ -23,16 +24,16 @@ const hasUser = () => {
             email: req.body.email,
             password: bcrypt.hashSync(req.body.password, salt)
         })
-        req.session.userInfo = {
-            ...req.session.userInfo,
-            username: result.username
-        }
         if (!result) {
             return res
                 .status(401)
                 .json({
                     error: 'Пользователь не найден'
                 })
+        }
+        req.session.userInfo = {
+            ...req.session.userInfo,
+            username: result.username
         }
         next()
     }

@@ -2,8 +2,18 @@ import LogInOut from "./LogInOut";
 import UserMenu from "./UserMenu";
 import './TopMenu.sass'
 import { NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { fetchAuth } from "../../store/authSlice";
 
-export default function TopMenu(props) {
+export default function TopMenu() {
+    const { userInfo } = useSelector(state => state.auth)
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(fetchAuth())
+    }, [dispatch])
+
     return <>
         <header>
             <div className="icon-app">
@@ -14,10 +24,10 @@ export default function TopMenu(props) {
                 </NavLink>
             </div>
             <div className="user-menu">
-                {UserMenu()}
+                <UserMenu userInfo={userInfo} />
             </div>
             <div className="in-out">
-                {LogInOut(props)}
+                <LogInOut userInfo={userInfo} />
             </div>
         </header>
     </>

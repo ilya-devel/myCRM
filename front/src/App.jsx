@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom"
 import HomePage from "./components/HomePage"
 import TopMenu from "./components/TopMenu/TopMenu"
 import LoginPage from './components/LoginPage/LoginPage'
+import { SignInPage } from './components/SignInPage/SignInPage'
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
           <Routes>
             <Route exact path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path='/signin' element={<SignInPage />} />
           </Routes>
         </div>
       </BrowserRouter >

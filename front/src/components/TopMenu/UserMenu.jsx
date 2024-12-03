@@ -1,6 +1,7 @@
-export default function UserMenu() {
-    const isAuth = false // Math.random() > 0.5
-    if (isAuth) {
+import PropTypes from "prop-types"
+
+export default function UserMenu(props) {
+    if (props.userInfo.isAuth) {
         return <>
             <p>Dashboard</p>
             <p>Notes</p>
@@ -9,4 +10,8 @@ export default function UserMenu() {
     } else {
         return <></>
     }
+}
+
+UserMenu.propTypes = {
+    userInfo: PropTypes.object
 }
