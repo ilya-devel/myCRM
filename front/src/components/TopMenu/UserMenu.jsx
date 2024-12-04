@@ -1,11 +1,19 @@
 import PropTypes from "prop-types"
+import { NavLink } from "react-router-dom"
 
 export default function UserMenu(props) {
     if (props.userInfo.isAuth) {
         return <>
-            <p>Dashboard</p>
-            <p>Notes</p>
-            <p>Books</p>
+
+            <NavLink to={'/note'}>
+                <div className="btn btn-topMenu">Dashboard</div>
+            </NavLink>
+            <NavLink to={'/note'}>
+                <div className="btn btn-topMenu">Notes</div>
+            </NavLink>
+            <NavLink to={'/note'}>
+                <div className="btn btn-topMenu">Books</div>
+            </NavLink>
         </>
     } else {
         return <></>
