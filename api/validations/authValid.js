@@ -33,7 +33,8 @@ const hasUser = () => {
         }
         req.session.userInfo = {
             ...req.session.userInfo,
-            username: result.username
+            username: result.username,
+            userId: result._id
         }
         next()
     }
@@ -56,10 +57,10 @@ const createUser = () => {
             }
         } else {
             return res
-            .status(400)
-            .json({
-                error: 'Пользователь с такой почтой уже существует'
-            })
+                .status(400)
+                .json({
+                    error: 'Пользователь с такой почтой уже существует'
+                })
         }
 
         if (!req.session.userInfo.user_id) {
@@ -73,4 +74,19 @@ const createUser = () => {
     }
 }
 
-module.exports = { checkAuth, hasUser, createUser }
+const isAuth = () => {
+    return async (req, res, next) => {
+        if (!req.session.isAuth) {
+            res
+                .status(403)
+                .json({
+                    notes: {},
+                    message: 'Вы не авторизованны'
+                })
+        } else {
+            next()
+        }
+    }
+}
+
+module.exports = { checkAuth, hasUser, createUser, isAuth }

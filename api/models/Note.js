@@ -7,8 +7,8 @@ const ObjectId = mongoose.ObjectId
 
 const note = new Schema({
     id: ObjectId,
-    author: {
-        type: User._id,
+    authorId: {
+        type: String,
         required: true
     },
     title: {

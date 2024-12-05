@@ -5,6 +5,11 @@ const session = require('express-session')
 const { createClient } = require('redis')
 const RedisStore = require('connect-redis').default
 const cors = require('cors')
+const auth = require('./routes/auth')
+const note = require('./routes/note')
+const { isAuth } = require('./validations/authValid')
+
+
 
 let redisClient = createClient()
 redisClient.connect({
@@ -32,9 +37,6 @@ mongoose.connect(
     dbName: 'myApi'
 }
 ).then(() => console.log('Connected!'))
-
-const auth = require('./routes/auth')
-const User = require('./models/User')
 
 let app = express()
 // app.use(cookieParser())
@@ -64,6 +66,7 @@ app.get('/', function (req, res) {
 })
 
 app.use('/auth', auth)
+app.use('/note', isAuth(), note)
 
 app.listen(PORT, () => {
     console.log(`Listening http://localhost:${PORT}.`)
