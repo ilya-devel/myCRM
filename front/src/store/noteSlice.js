@@ -1,14 +1,16 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { fetchFunc } from './fetchFunc'
 
 export const fetchNote = createAsyncThunk(
     'note/fetchAuth',
     async (id = '', thunkApi) => {
         try {
-            const result = await fetch(
-                import.meta.env.VITE_ROOT_URL + 'note/' + id,
-                {
-                    credentials: 'include'
-                })
+            // const result = await fetch(
+            //     import.meta.env.VITE_ROOT_URL + 'note/' + id,
+            //     {
+            //         credentials: 'include'
+            //     })
+            const result = await fetchFunc({ url: 'note/' + id })
             if (!result.ok) {
                 if (result.status === 403) {
                     throw new Error('Вы не авторизованы')
@@ -33,7 +35,19 @@ const initialState = {
 const noteSlice = createSlice({
     name: 'noteSlice',
     initialState,
-    reducers: {},
+    reducers: {
+        removeNote: (state, action) => {
+
+            fetchFunc({
+                url: 'note/' + action.payload.id,
+                method: 'DELETE',
+            })
+            const index = state.notes.indexOf(state.notes.find(i => i._id == action.payload.id))
+            if (index != -1) {
+                state.notes.splice(index, 1)
+            }
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchNote.pending, (state) => {
@@ -42,8 +56,8 @@ const noteSlice = createSlice({
             })
             .addCase(fetchNote.fulfilled, (state, action) => {
                 state.loading = false,
-                state.error = null,
-                state.notes = action.payload.notes
+                    state.error = null,
+                    state.notes = action.payload.notes
             })
             .addCase(fetchNote.rejected, (state, action) => {
                 state.loading = false
@@ -53,6 +67,6 @@ const noteSlice = createSlice({
     }
 });
 
-export const { fetchNoteSuccess, fetchNoteRequest, fetchNoteFailure } = noteSlice.actions
+export const { fetchNoteSuccess, fetchNoteRequest, fetchNoteFailure, removeNote } = noteSlice.actions
 
 export default noteSlice.reducer
