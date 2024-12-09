@@ -4,8 +4,10 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 export const fetchAuth = createAsyncThunk(
     'auth/fetchAuth',
     async (endPoint = '', thunkApi) => {
+        // console.log(import.meta.env.VITE_AUTH_URL)
         try {
-            const response = await fetch('http://localhost:10666/auth/' + endPoint, {
+            // const response = await fetch('http://localhost:10666/auth/' + endPoint, {
+            const response = await fetch(import.meta.env.VITE_AUTH_URL + endPoint, {
                 credentials: 'include'
             })
             if (!response.ok) {

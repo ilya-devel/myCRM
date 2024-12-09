@@ -17,7 +17,6 @@ export default function LogInOut(props) {
             },
             credentials: 'include',
         })
-        console.log(result.ok)
         if (!result.ok) {
             setError(result.message)
         } else {
