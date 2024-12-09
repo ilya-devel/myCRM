@@ -10,6 +10,9 @@ export const fetchNote = createAsyncThunk(
                     credentials: 'include'
                 })
             if (!result.ok) {
+                if (result.status === 403) {
+                    throw new Error('Вы не авторизованы')
+                }
                 throw new Error('Возникла проблема при обращении к базе')
             } else {
                 // let result = await response.json()
@@ -44,7 +47,8 @@ const noteSlice = createSlice({
             })
             .addCase(fetchNote.rejected, (state, action) => {
                 state.loading = false
-                state.error = action.error.message || action.error
+                console.log(action)
+                state.error = action.payload.message || action.error
             })
     }
 });

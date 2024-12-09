@@ -1,7 +1,6 @@
 import PropTypes from "prop-types"
 
 export default function Note(props) {
-    console.log(new Date(props.noteItem.createAt).toLocaleString())
     return <div className="noteCard" key={props.noteItem._id}>
         <p className="noteTitle">{props.noteItem.title}</p>
         <p className="noteDesc">{props.noteItem.description}</p>
