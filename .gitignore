@@ -9,3 +9,4 @@ redisdata/
 ### TEST THEORY ###
 test*/
 crud-with-mongodb/
+front/.env
