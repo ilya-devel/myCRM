@@ -20,6 +20,36 @@
         text-align: right
         font-style: italic
 
+.editNote
+    position: absolute
+    top: calc( 50% - 50% / 2 )
+    left: calc( 50% - 75% / 2 )
+    width: 75%
+    height: 50%
+    border: 1px dotted grey
+    border-radius: 5px
+    background-color: lightgrey
+    box-sizing: border-box
+    box-shadow: 1em 1em 2em grey, -1em -1em 2em white
+    display: flex
+    flex-direction: column
+    // justify-content: start
+    gap: 10px
+    padding: 10px
+
+    // .inputSpace
+    //     margin-left: 10px
+    //     margin-right: 10px
+
+    // .inputText
+    //     margin-left: 10px
+    //     margin-right: 10px
+
+    .labelInput
+        // margin-left: 10px
+        font-weight: 700
+
+
 
 .faultLoading
     width: 300px
@@ -34,3 +64,8 @@
     border-radius: 5px
     padding: 10px
     background-color: lightgrey
+
+.errMsg
+    color: red
+    font-size: 0.8em
+    height: 1.4em

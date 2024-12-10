@@ -20,7 +20,6 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
     const result = await getNote(req, req.params.id)
-    console.log()
     res
         .status(200)
         .json({
@@ -31,12 +30,12 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', (req, res) => {
     const result = addNote(req)
-    console.log(result)
     res
         .status(201)
         .json({
-            message: `Заметка добавлена с id: ${result._id}`,
-            note: { ...result.toJSON() }
+            // message: `Заметка добавлена с id: ${result._id}`,
+            // note: { ...result.toJSON() }
+            ...result.toJSON()
         })
 })
 

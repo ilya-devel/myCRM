@@ -4,6 +4,7 @@ import { fetchNote } from "../../store/noteSlice"
 import Note from "./Note"
 import './NotePage.sass'
 import { fetchAuth } from "../../store/authSlice"
+import { AddNote } from "./AddNote"
 
 export const NotePage = () => {
     const { error, notes } = useSelector(state => state.note)
@@ -18,6 +19,8 @@ export const NotePage = () => {
 
     return <>
         <p className="h1">Ваши заметки</p>
+        <button onClick={() => { <AddNote />}} className="btn">Добавить новую заметку</button>
+        {/* <AddNote /> */}
         {error && <p className="faultLoading">{error}</p>}
         <div className="notesList">
             {notes.map(note =>

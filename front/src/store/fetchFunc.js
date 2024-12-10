@@ -6,8 +6,11 @@ export const fetchFunc = async (option = {
     return await fetch(import.meta.env.VITE_ROOT_URL + (option.url || 'note/'),
         {
             method: option.method || 'GET',
-            body: option.body || null,
-            credentials: 'include'
+            body: JSON.stringify(option.body) || null,
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            }
         }
     )
-};
+}

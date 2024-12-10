@@ -2,14 +2,9 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { fetchFunc } from './fetchFunc'
 
 export const fetchNote = createAsyncThunk(
-    'note/fetchAuth',
+    'note/fetchNote',
     async (id = '', thunkApi) => {
         try {
-            // const result = await fetch(
-            //     import.meta.env.VITE_ROOT_URL + 'note/' + id,
-            //     {
-            //         credentials: 'include'
-            //     })
             const result = await fetchFunc({ url: 'note/' + id })
             if (!result.ok) {
                 if (result.status === 403) {
@@ -23,6 +18,22 @@ export const fetchNote = createAsyncThunk(
         } catch (error) {
             return thunkApi.rejectWithValue(error)
         }
+    }
+)
+
+export const updateNote = createAsyncThunk(
+    'note/updateNote',
+    async (newNote) => {
+        const response = await fetchFunc({
+            url: 'note/' + (newNote.id || ''),
+            method: newNote.id ? 'PUT' : 'POST',
+            body: {
+                ...newNote
+            }
+        })
+        const data = await response.json()
+        console.log(data)
+        return data
     }
 )
 
@@ -64,9 +75,15 @@ const noteSlice = createSlice({
                 console.log(action)
                 state.error = action.payload.message || action.error
             })
+            .addCase(updateNote.fulfilled, (state, action) => {
+                state.notes = [
+                    ...state.notes,
+                    action.payload
+                ]
+            })
     }
 });
 
-export const { fetchNoteSuccess, fetchNoteRequest, fetchNoteFailure, removeNote } = noteSlice.actions
+export const { fetchNoteSuccess, fetchNoteRequest, fetchNoteFailure, removeNote, updateNoteSuccess } = noteSlice.actions
 
 export default noteSlice.reducer
