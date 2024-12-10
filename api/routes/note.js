@@ -44,8 +44,7 @@ router.put('/:id', async (req, res) => {
     res
         .status(201)
         .json({
-            message: 'Заметка обновлена',
-            note: { ...result.toJSON() }
+            ...result.toJSON()
         })
 })
 

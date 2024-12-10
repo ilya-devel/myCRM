@@ -25,14 +25,13 @@ export const updateNote = createAsyncThunk(
     'note/updateNote',
     async (newNote) => {
         const response = await fetchFunc({
-            url: 'note/' + (newNote.id || ''),
-            method: newNote.id ? 'PUT' : 'POST',
+            url: 'note/' + (newNote._id || ''),
+            method: newNote._id ? 'PUT' : 'POST',
             body: {
                 ...newNote
             }
         })
         const data = await response.json()
-        console.log(data)
         return data
     }
 )
@@ -53,7 +52,7 @@ const noteSlice = createSlice({
                 url: 'note/' + action.payload.id,
                 method: 'DELETE',
             })
-            const index = state.notes.indexOf(state.notes.find(i => i._id == action.payload.id))
+            const index = state.notes.indexOf(state.notes.find(i => i._id === action.payload.id))
             if (index != -1) {
                 state.notes.splice(index, 1)
             }
@@ -72,14 +71,18 @@ const noteSlice = createSlice({
             })
             .addCase(fetchNote.rejected, (state, action) => {
                 state.loading = false
-                console.log(action)
                 state.error = action.payload.message || action.error
             })
             .addCase(updateNote.fulfilled, (state, action) => {
-                state.notes = [
-                    ...state.notes,
-                    action.payload
-                ]
+                const index = state.notes.indexOf(state.notes.find(i => i._id === action.payload._id))
+                if (index === -1) {
+                    state.notes = [
+                        ...state.notes,
+                        action.payload
+                    ]
+                } else {
+                    state.notes[index] = { ...action.payload }
+                }
             })
     }
 });

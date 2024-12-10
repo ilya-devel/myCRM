@@ -11,6 +11,30 @@
     border-radius: 5px
     padding: 5px
 
+    &__layout
+        display: flex
+        gap: 10px
+
+        .dataLayout
+            width: calc(100% - 120px - 10px)
+            background-color: lightgrey
+            border-radius: 5px
+            padding-top: 5px
+            padding-left: 5px
+
+
+        .btnLayout
+            display: flex
+            flex-direction: column
+            width: 120px
+            gap: 5px
+            padding: 2px
+            background-color: lightgrey
+            border-radius: 5px
+
+    .btn
+        margin: 0
+
     .noteTitle
         text-align: center
         font-size: 1.5em
@@ -25,7 +49,6 @@
     top: calc( 50% - 50% / 2 )
     left: calc( 50% - 75% / 2 )
     width: 75%
-    height: 50%
     border: 1px dotted grey
     border-radius: 5px
     background-color: lightgrey
@@ -33,22 +56,35 @@
     box-shadow: 1em 1em 2em grey, -1em -1em 2em white
     display: flex
     flex-direction: column
-    // justify-content: start
+    gap: 5px
+    padding: 10px
+
+    .btn
+        margin: 0
+
+    .labelInput
+        font-weight: 700
+
+.viewNote
+    position: absolute
+    top: calc( 50% - 50% / 2 )
+    left: calc( 50% - 75% / 2 )
+    width: 75%
+    border: 1px dotted grey
+    border-radius: 5px
+    background-color: lightgrey
+    box-sizing: border-box
+    box-shadow: 1em 1em 2em grey, -1em -1em 2em white
+    display: flex
+    flex-direction: column
     gap: 10px
     padding: 10px
 
-    // .inputSpace
-    //     margin-left: 10px
-    //     margin-right: 10px
-
-    // .inputText
-    //     margin-left: 10px
-    //     margin-right: 10px
+    .btn
+        margin: 0
 
     .labelInput
-        // margin-left: 10px
         font-weight: 700
-
 
 
 .faultLoading

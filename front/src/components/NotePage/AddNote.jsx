@@ -16,16 +16,13 @@ export const AddNote = (props) => {
         if (editNote.title.length < 1) {
             setError('Заголовок обязателен')
         } else {
-            if (!editNote.id) {
-                dispatch(updateNote(editNote))
-            } else {
-                null
-            }
+            dispatch(updateNote(editNote))
         }
+        props.setShow(false)
     }
 
     return <div className="editNote">
-        <input type="text" readOnly value={editNote._id || ''} className="inputSpace" />
+        <input type="text" readOnly hidden value={editNote._id || ''} className="inputSpace" />
         <label htmlFor="title" className="labelInput">Заголовок заметки:</label>
         <input type="text" id="title" className="inputSpace"
             defaultValue={editNote.title}
@@ -46,9 +43,11 @@ export const AddNote = (props) => {
             onChange={e => setEditNote({ ...editNote, description: e.target.value })
             } />
         <button className="btn" onClick={saveNote}>Сохранить</button>
+        <button className="btn" onClick={() => props.setShow(false)}>Закрыть</button>
     </div>
 }
 
 AddNote.propTypes = {
-    itemNote: PropTypes.object
+    itemNote: PropTypes.object,
+    setShow: PropTypes.func
 }

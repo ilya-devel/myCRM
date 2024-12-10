@@ -5,11 +5,22 @@ export default function Note(props) {
 
 
     return <div className="noteCard" key={props.noteItem._id}>
-        <p className="noteId" hidden>{props.noteItem._id}</p>
-        <p className="noteTitle">{props.noteItem.title}</p>
-        <p className="noteDesc">{props.noteItem.description}</p>
-        {/* <button onClick={() => setIsEdit(!isEdit)}>Edit</button> */}
-        <button className="btn" onClick={() => props.dispatch(removeNote({ id: props.noteItem._id }))}>Delete</button>
+        <div className="noteCard__layout">
+            <div className="dataLayout">
+                <p className="noteId" hidden>{props.noteItem._id}</p>
+                <p className="noteTitle">{props.noteItem.title}</p>
+                <p className="noteDesc">{props.noteItem.description}</p>
+            </div>
+            <div className="btnLayout">
+                <button className="btn" onClick={() => {
+                    props.editFunc(props.noteItem)
+                }}>Редактировать</button>
+                <button className="btn" onClick={() => props.dispatch(removeNote({ id: props.noteItem._id }))}>Удалить</button>
+                <button className="btn" onClick={() => {
+                    props.viewFunc(props.noteItem)
+                }}>Просмотр</button>
+            </div>
+        </div>
         <p className="noteCreated">Создано: {new Date(props.noteItem.createAt).toLocaleString()}</p>
     </div>
 
@@ -19,5 +30,7 @@ export default function Note(props) {
 
 Note.propTypes = {
     noteItem: PropTypes.object,
-    dispatch: PropTypes.func
+    dispatch: PropTypes.func,
+    editFunc: PropTypes.func,
+    viewFunc: PropTypes.func
 }
