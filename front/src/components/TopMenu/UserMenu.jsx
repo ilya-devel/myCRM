@@ -6,14 +6,9 @@ export default function UserMenu(props) {
         return <>
 
             <NavLink to={'/note'}>
-                <div className="btn btn-topMenu">Dashboard</div>
-            </NavLink>
-            <NavLink to={'/note'}>
                 <div className="btn btn-topMenu">Notes</div>
             </NavLink>
-            <NavLink to={'/note'}>
-                <div className="btn btn-topMenu">Books</div>
-            </NavLink>
+
         </>
     } else {
         return <></>
