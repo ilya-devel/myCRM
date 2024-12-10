@@ -10,3 +10,4 @@ redisdata/
 test*/
 crud-with-mongodb/
 front/.env
+./front/.env
