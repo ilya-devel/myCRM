@@ -2,6 +2,8 @@ const express = require('express')
 const Note = require('../models/Note')
 const { hasUser, isAuth } = require('../validations/authValid')
 const { addNote, getAllNotes, getNote, updateNote, removeNote } = require('../services/noteService')
+const { checkNote } = require('../validations/noteValid')
+const { noteScheme } = require('../schemes/noteScheme')
 
 
 const router = express.Router()
@@ -28,7 +30,7 @@ router.get('/:id', async (req, res) => {
         })
 })
 
-router.post('/', (req, res) => {
+router.post('/', checkNote(noteScheme), (req, res) => {
     const result = addNote(req)
     res
         .status(201)
@@ -39,7 +41,7 @@ router.post('/', (req, res) => {
         })
 })
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', checkNote(noteScheme), async (req, res) => {
     const result = await updateNote(req, req.params.id)
     res
         .status(201)

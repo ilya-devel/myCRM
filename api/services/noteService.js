@@ -6,6 +6,7 @@ const addNote = (req) => {
     newNote.authorId = req.session.userInfo.userId
     newNote.title = req.body.title
     newNote.description = req.body.description || null
+    newNote.isComplete = req.body.isComplete || false
     newNote.save()
     return newNote
 }
