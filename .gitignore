@@ -11,3 +11,4 @@ test*/
 crud-with-mongodb/
 front/.env
 ./front/.env
+.DS_Store
